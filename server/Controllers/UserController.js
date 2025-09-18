@@ -3,24 +3,21 @@ const {CatchAsyncErrors} = require("../middleware/CatchAsuncErrors");
 const UserModel = require("../models/UserModel");
 const jwt = require("jsonwebtoken")
 
-// For /admin/sign-up Route
-const UserSignup = CatchAsyncErrors(async (req, res) => {
-    const { name, email, password, role } = req.body;
+// For /api/auth/create-user Route
+const CreateUser = CatchAsyncErrors(async (req, res) => {
+    const { name, email, password} = req.body;
 
     let user = await UserModel.findOne({ email: email });
 
     if (user) return res.status(400).json({ message: "User already exists", code: 400 });
 
-    user = new UserModel({ name, email, password, role });
+    user = new UserModel({ name, email, password });
     await user.save();
 
-    // Create JWT token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "7d" });
-
-    res.status(201).json({ message: `${req.body.name} has been created`, token, user: { id: user._id, name: user.name, email: user.email, role: user } });
+    res.status(201).json({ message: `${req.body.name} has been created`, user: { id: user._id, name: user.name, email: user.email, role: user } });
 });
 
-// For /admin/sign-in Route
+// For /api/auth/sign-in Route
 const UserLogin = CatchAsyncErrors(async(req,res)=>{
     const {email,password} = req.body;
 
@@ -37,14 +34,12 @@ const UserLogin = CatchAsyncErrors(async(req,res)=>{
 })
 
 
-// For /admin/all-users Route
-const AllUsers = async(req,res)=>{
-    console.log(req.user);
-    
+// For /api/auth/all-users Route
+const AllUsers = CatchAsyncErrors(async(req,res)=>{ 
     if(req.user.role !== 'admin') return res.status(403).json({message:"You are not allowed to access this route",code:403 });
-    const users = await UserModel.find().select('-password');
+    const users = await UserModel.find({role:"user"}).select('-password');
     res.json(users)
-}
+})
 
 
-module.exports = {UserSignup,UserLogin,AllUsers};
+module.exports = {CreateUser,UserLogin,AllUsers};

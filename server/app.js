@@ -13,6 +13,7 @@ ConnectDB()
 
 
 app.use("/api/auth",require("./routes/UserRoute"));
+app.use("/api/tasks",require("./routes/TaskRoute"));
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on port ${process.env.PORT}`)
