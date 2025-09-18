@@ -29,7 +29,7 @@ const UserLogin = CatchAsyncErrors(async(req,res)=>{
     if(!isMatch) return res.status(400).json({message:"Invalid Credentials"});
     const token = jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"7d"});
 
-    res.json({token,user:{id:user._id,name:user.name,email:user.email,role:user.role}});
+    res.json({message:"Login successfuly",token,user:{id:user._id,name:user.name,email:user.email,role:user.role}});
 
 })
 
