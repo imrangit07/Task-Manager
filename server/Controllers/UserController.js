@@ -5,13 +5,15 @@ const jwt = require("jsonwebtoken")
 
 // For /api/auth/create-user Route
 const CreateUser = CatchAsyncErrors(async (req, res) => {
-    const { name, email, password} = req.body;
-
+    
+    if(req.user.role !== 'admin') return res.status(403).json({message:"You are not allowed to access this route",code:403 });
+    const { name, email, designation} = req.body;
+    const password = "12345"
     let user = await UserModel.findOne({ email: email });
 
     if (user) return res.status(400).json({ message: "User already exists", code: 400 });
 
-    user = new UserModel({ name, email, password });
+    user = new UserModel({ name, email, designation, password });
     await user.save();
 
     res.status(201).json({ message: `${req.body.name} has been created`, user: { id: user._id, name: user.name, email: user.email, role: user } });

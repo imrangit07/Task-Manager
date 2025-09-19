@@ -4,7 +4,7 @@
  
  export const asyncsignin = ({email,password})=>async(dispatch)=>{
     try {
-      const res = await axios.post(BACKEND_URL,{email,password});
+      const res = await axios.post(`${BACKEND_URL}auth/sign-in`,{email,password});
       console.log(res.data.token);
       dispatch(setAuth({token:res.data.token,user:res.data.user}))
       alert(res.data.message)

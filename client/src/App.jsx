@@ -5,13 +5,14 @@ import Login from "./pages/Login"
 import { useSelector } from "react-redux"
 import Dashboard from "./pages/Dashboard"
 import CreateUser from "./pages/CreateUser"
+import CreateTask from "./pages/CreateTask"
+import TaskList from "./pages/TaskList"
 
 
 const App = () => {
   const isAuth = useSelector((state) => state.auth.token);
   const userdata = useSelector((state) => state.auth.user);
-
-  console.log(userdata.role);
+console.log(isAuth);
 
   return (
     <BrowserRouter>
@@ -30,9 +31,15 @@ const App = () => {
           )}
 
         </Route>
+         {isAuth && 
          <Route path="/dashboard" element={<Dashboard />} >
             <Route path="create-user" element={<CreateUser />} />
+            <Route path="create-task" element={<CreateTask />} />
+            <Route path="task-list" element={<TaskList />} />
           </Route>
+          }
+
+          <Route path="*" element={<Navigate to="/"/>}/>
       </Routes>
     </BrowserRouter>
   )

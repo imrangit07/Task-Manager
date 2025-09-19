@@ -13,6 +13,12 @@ const Dashboard = () => {
                         <li>
                             <Link to="create-user">Create User</Link>
                         </li>
+                        <li>
+                            <Link to="create-task">Create Task</Link>
+                        </li>
+                        <li>
+                            <Link to="task-list">Task List</Link>
+                        </li>
                     </ul>
                 </div>
                 <div style={{ flex: 1, padding: "20px" }}>
