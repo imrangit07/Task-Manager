@@ -7,12 +7,12 @@ import Dashboard from "./pages/Dashboard"
 import CreateUser from "./pages/CreateUser"
 import CreateTask from "./pages/CreateTask"
 import TaskList from "./pages/TaskList"
+import DashboardWell from "./components/DashboardWell"
 
 
 const App = () => {
   const isAuth = useSelector((state) => state.auth.token);
   const userdata = useSelector((state) => state.auth.user);
-console.log(isAuth);
 
   return (
     <BrowserRouter>
@@ -33,6 +33,7 @@ console.log(isAuth);
         </Route>
          {isAuth && 
          <Route path="/dashboard" element={<Dashboard />} >
+            <Route index element={<DashboardWell/>}/>
             <Route path="create-user" element={<CreateUser />} />
             <Route path="create-task" element={<CreateTask />} />
             <Route path="task-list" element={<TaskList />} />

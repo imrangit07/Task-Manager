@@ -1,32 +1,48 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useLocation } from 'react-router-dom'
 import Header from '../components/Header'
+import { useDispatch } from 'react-redux'
+import { logout } from '../store/reducers/AuthSlice';
+
 
 const Dashboard = () => {
+    const dispatch = useDispatch()
+    const location = useLocation()
     return (
-        <div className='scroll-bar'>
+        <div className='dashboard-container scroll-bar'>
             <Header />
-            <div style={{ display: "flex" }}>
-                <div style={{ width: "200px", height: "90vh", background: "#f4f4f4", padding: "10px" }}>
+            <div className='dashboard-layout'>
+                <div className='dashboard-sidebar'>
                     <h3>Dashboard Menu</h3>
-                    <ul>
+                    <ul className='dashboard-menu'>
                         <li>
-                            <Link to="create-user">Create User</Link>
+                            <Link to="create-user" 
+                            className={location.pathname.includes("create-user")?'active':''}
+                            >Create User</Link>
                         </li>
                         <li>
-                            <Link to="create-task">Create Task</Link>
+                            <Link to="create-task"
+                            className={location.pathname.includes("create-user")?'active':''}
+                            >Create Task</Link>
                         </li>
                         <li>
-                            <Link to="task-list">Task List</Link>
+                            <Link to="task-list"
+                            className={location.pathname.includes("create-user")?'active':''}
+                            >Task List</Link>
                         </li>
                     </ul>
+                   
+              <button className='logout-button' onClick={()=>dispatch(logout())}>Logout</button>
+      
                 </div>
-                <div style={{ flex: 1, padding: "20px" }}>
+                <div className='dashboard-main'>
+                    <div className="dashboard-content">
+
                     <Outlet />
+                    </div>
                 </div>
             </div>
         </div>
-
     )
 }
 

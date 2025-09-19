@@ -22,7 +22,6 @@ const Login = () => {
   // Redirect to home page if user is authenticated
   useEffect(() => {
     isAuth && navigate("/");
-    console.log('run');
     
   }, [isAuth, navigate]);
 

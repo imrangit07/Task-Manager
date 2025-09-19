@@ -9,9 +9,6 @@ const authSlice = createSlice({
         setTasks:(state,action)=>{
             state.tasks=action.payload;
         },
-        addTasks:(state,action)=>{
-            state.tasks.push(action.payload);
-        },
         updateTasks:(state,action)=>{
             const index = state.tasks.findIndex(t=>t._id === action.payload._id);
             if(index !== -1)

@@ -15,7 +15,7 @@ const TasksReducer = persistReducer(persistConfig, taskReducer);
 const store = configureStore({
     reducer: {
         auth: UsersdReducer,
-        tasks:TasksReducer
+        task:TasksReducer
     },
      middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

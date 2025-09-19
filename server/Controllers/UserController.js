@@ -8,7 +8,7 @@ const CreateUser = CatchAsyncErrors(async (req, res) => {
     
     if(req.user.role !== 'admin') return res.status(403).json({message:"You are not allowed to access this route",code:403 });
     const { name, email, designation} = req.body;
-    const password = "12345"
+    const password = "123456"
     let user = await UserModel.findOne({ email: email });
 
     if (user) return res.status(400).json({ message: "User already exists", code: 400 });

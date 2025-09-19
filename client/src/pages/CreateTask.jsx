@@ -4,14 +4,12 @@ import GetUserDetails from "./GetUserDetails";
 import axios from "axios";
 import BACKEND_URL from "../config/Config";
 import { useDispatch, useSelector } from "react-redux";
-import { asyncAddTask } from '../store/actions/TaskActions';
-
 const CreateTask = () => {
     const token = useSelector((state) => state.auth.token);
 
     const [taskData, setTaskData] = useState({
         title: "",
-        designation: "",
+        description: "",
         dueDate: "",
         priority: "low",
         assignedTo: ""
@@ -26,7 +24,17 @@ const CreateTask = () => {
     }
     const handelSubmit = async (e) => {
         e.preventDefault()
-        dispatch(asyncAddTask({task:taskData,token}))
+         try {
+        const res = await axios.post(`${BACKEND_URL}tasks/create-task`, taskData, {
+            headers: {
+                "authorization": `Bearer ${token}`
+            }
+        });
+       
+      alert(res.data.message)
+    } catch (error) {
+        console.log(error);
+    }
     }
 
     const loadUserData = async () => {
@@ -91,6 +99,7 @@ const CreateTask = () => {
                             <select name="assignedTo"
                                 value={taskData.assignedTo}
                                 onChange={handelInput} required>
+                                    <option value={""} selected>Select User</option>
                                 {users.map((user) => (
                                     <option key={user._id} value={user._id}>{user.name}</option>
                                 ))}

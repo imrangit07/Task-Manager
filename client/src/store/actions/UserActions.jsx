@@ -9,7 +9,7 @@
       dispatch(setAuth({token:res.data.token,user:res.data.user}))
       alert(res.data.message)
     } catch (error) {
-      alert(error);
+      alert(error.response.data.message);
     }
   }
 
