@@ -3,19 +3,17 @@ import { FaRegUserCircle } from "react-icons/fa";
 
 const Header = () => {
   const userdata = useSelector((state) => state.auth.user);
-  const token = useSelector((state) => state.auth.token);
-  console.log("header", token);
 
   return (
     <div className="header-section">
       <div className="header-container">
         <div className="header-logo">
-          <h2>Header</h2>
+          <h2>TASK-MANAGER</h2>
         </div>
         <div className="header-user">
           {userdata ? (
-            <div>
-              <p><FaRegUserCircle/> {userdata.name}</p>
+            <div >
+              <p className="header-username"><FaRegUserCircle style={{fontSize:"22px"}}/> <span className="user-name">{userdata.name}</span></p>
             </div>
           ) : (
             <p>Login</p>

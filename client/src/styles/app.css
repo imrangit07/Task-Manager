@@ -11,6 +11,7 @@ body {
     height:100%
 }
 
+
 /* Header Section */
 .header-section {
     background: #fff;
@@ -52,13 +53,22 @@ body {
 }
 
 .header-user p {
+    text-align: center;
+    border:1px solid black;
     font-size: 1rem;
     font-weight: 500;
     padding: 0.5rem 1rem;
     border-radius: 20px;
     transition: all 0.3s ease;
 }
-
+.header-username{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-name{
+    margin-left: 5px;
+}
 .header-user div p {
     background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -132,7 +142,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 90vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
