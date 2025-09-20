@@ -2,8 +2,9 @@ import axios from "axios";
 import { useEffect, useState } from "react"
 import BACKEND_URL from "../config/Config";
 import { useSelector } from "react-redux";
-
-const GetUserDetails = () => {
+import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
+const GetUserDetails = ({load}) => {
      const token = useSelector((state) => state.auth.token);
  const [users,setUsers]=useState([]);
 
@@ -18,15 +19,29 @@ const loadUserData = async()=>{
         });
         setUsers(res.data)
     } catch (error) {
-        
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
     }
 }
-console.log(users);
+const deleteUser = async(id)=>{   
+    try {
+        const res = await axios.delete(`${BACKEND_URL}auth/delete?id=${id}`,{
+            headers:{
+                "authorization":`Bearer ${token}`
+            }
+        });
+        toast.success(res.data.message)
+        loadUserData()
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
+    }
+}
+
+
 
 
 useEffect(()=>{
 loadUserData();
-},[token])
+},[token,load])
   return (
     <div>
           <table className="user-table">
@@ -35,6 +50,7 @@ loadUserData();
                         <th>Name</th>
                         <th>Email</th>
                         <th>Designation</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +59,9 @@ loadUserData();
                             <td>{user.name}</td>
                             <td>{user.email}</td>
                             <td>{user.designation}</td>
+                            <td style={{textAlign:"center",color:"red",fontSize:"18px",cursor:"pointer"}}
+                            onClick={()=>{deleteUser(user._id)}}
+                            ><MdDelete/></td>
                         </tr>
                     ))}
                 </tbody>

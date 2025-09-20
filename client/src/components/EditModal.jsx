@@ -4,7 +4,8 @@ import BACKEND_URL from '../config/Config';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-const EditModal = ({ selectedTask, setShowEditModal,loadTaskData }) => {
+import { toast } from "react-toastify";
+const EditModal = ({ selectedTask, setShowEditModal, loadTaskData }) => {
   const token = useSelector((state) => state.auth.token);
 
   const [taskData, setTaskData] = useState({
@@ -27,11 +28,12 @@ const EditModal = ({ selectedTask, setShowEditModal,loadTaskData }) => {
           "authorization": `Bearer ${token}`
         }
       })
-      alert(res.data.massage)
+      toast.success(res.data.massage)
       loadTaskData();
       setShowEditModal(false)
     } catch (error) {
-      alert(error)
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
+
     }
   }
 

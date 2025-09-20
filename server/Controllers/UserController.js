@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken")
 const CreateUser = CatchAsyncErrors(async (req, res) => {
     
     if(req.user.role !== 'admin') return res.status(403).json({message:"You are not allowed to access this route",code:403 });
+
     const { name, email, designation} = req.body;
     const password = "123456"
     let user = await UserModel.findOne({ email: email });
@@ -43,5 +44,12 @@ const AllUsers = CatchAsyncErrors(async(req,res)=>{
     res.json(users)
 })
 
+const DeleteUser = CatchAsyncErrors(async(req,res)=>{ 
+    if(req.user.role !== 'admin') return res.status(403).json({message:"You are not allowed to access this route",code:403 });
+    const {id}=req.query;
+    const users = await UserModel.findByIdAndDelete({_id:id})
+    res.json({message:"User Deleted Successfully"})
+})
 
-module.exports = {CreateUser,UserLogin,AllUsers};
+
+module.exports = {CreateUser,UserLogin,AllUsers,DeleteUser};

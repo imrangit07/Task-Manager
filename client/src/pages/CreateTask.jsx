@@ -4,6 +4,7 @@ import GetUserDetails from "./GetUserDetails";
 import axios from "axios";
 import BACKEND_URL from "../config/Config";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const CreateTask = () => {
     const token = useSelector((state) => state.auth.token);
 
@@ -24,17 +25,24 @@ const CreateTask = () => {
     }
     const handelSubmit = async (e) => {
         e.preventDefault()
-         try {
-        const res = await axios.post(`${BACKEND_URL}tasks/create-task`, taskData, {
-            headers: {
-                "authorization": `Bearer ${token}`
-            }
-        });
-       
-      alert(res.data.message)
-    } catch (error) {
-        console.log(error);
-    }
+        try {
+            const res = await axios.post(`${BACKEND_URL}tasks/create-task`, taskData, {
+                headers: {
+                    "authorization": `Bearer ${token}`
+                }
+            });
+            setTaskData({
+                title: "",
+                description: "",
+                dueDate: "",
+                priority: "low",
+                assignedTo: ""
+            })
+            toast.success(res.data.message)
+        } catch (error) {
+            toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
+
+        }
     }
 
     const loadUserData = async () => {
@@ -56,8 +64,8 @@ const CreateTask = () => {
         loadUserData();
     }, [token])
     return (
-        <div style={{display:"flex",alignItems:"center",justifyContent:"center"}}>
-            <div className="left-container" style={{maxWidth:"450px"}}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="left-container" style={{ maxWidth: "450px" }}>
                 <div className="form-header">
                     <p>Create New Task</p>
                 </div>
@@ -82,6 +90,7 @@ const CreateTask = () => {
                                 name='dueDate'
                                 value={taskData.dueDate}
                                 onChange={handelInput}
+                                min={new Date().toISOString().split("T")[0]}
                                 required />
                         </div>
                         <div className="form-group">
@@ -99,7 +108,7 @@ const CreateTask = () => {
                             <select name="assignedTo"
                                 value={taskData.assignedTo}
                                 onChange={handelInput} required>
-                                    <option value={""} selected>Select User</option>
+                                <option value={""} selected>Select User</option>
                                 {users.map((user) => (
                                     <option key={user._id} value={user._id}>{user.name}</option>
                                 ))}

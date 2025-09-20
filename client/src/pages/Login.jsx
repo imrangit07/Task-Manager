@@ -19,10 +19,9 @@ const Login = () => {
     dispatch(asyncsignin({email, password}))
   }
 
-  // Redirect to home page if user is authenticated
+ 
   useEffect(() => {
     isAuth && navigate("/");
-    
   }, [isAuth, navigate]);
 
   return (

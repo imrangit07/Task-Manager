@@ -2,6 +2,7 @@ import axios from 'axios';
 import React from 'react'
 import BACKEND_URL from '../config/Config';
 import { useSelector } from 'react-redux';
+import { toast } from "react-toastify";
 
 const DeleteModal = ({selectedTask,setShowDeleteModal,loadTaskData}) => {
   const token = useSelector((state) => state.auth.token);
@@ -14,11 +15,11 @@ const DeleteModal = ({selectedTask,setShowDeleteModal,loadTaskData}) => {
           "authorization": `Bearer ${token}`
         }
       });
-      alert(res.data.message)
+      toast.success(res.data.message)
       loadTaskData()
       setShowDeleteModal(false)
     } catch (error) {
-      alert(error)
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
     }
   }
   

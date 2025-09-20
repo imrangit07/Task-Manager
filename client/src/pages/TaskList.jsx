@@ -7,7 +7,7 @@ import axios from 'axios';
 import EditModal from '../components/EditModal';
 import DeleteModal from '../components/DeleteModal';
 import ViewModal from '../components/ViewModal';
-
+import { toast } from "react-toastify";
 const TaskList = () => {
   const token = useSelector((state) => state.auth.token);
 
@@ -23,7 +23,7 @@ const TaskList = () => {
 
   const loadTaskData = async () => {
     try {
-      const res = await axios.get(`${BACKEND_URL}tasks/all-tasks?page=${page}&limit=4`, {
+      const res = await axios.get(`${BACKEND_URL}tasks/all-tasks?page=${page}&limit=6`, {
         headers: {
           "authorization": `Bearer ${token}`
         }
@@ -33,7 +33,7 @@ const TaskList = () => {
       setPage(res.data.page)
       setPages(res.data.pages)
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
 
     }
   }
@@ -57,7 +57,7 @@ const TaskList = () => {
 
   useEffect(() => {
     loadTaskData();
-  }, [page])
+  }, [page,showViewModal])
 
   return (
     <div className='task-list-container'>
@@ -70,7 +70,7 @@ const TaskList = () => {
               {/* <th>Assign To</th> */}
               <th>Due Date</th>
               <th>Status</th>
-              <th>Edig</th>
+              <th>Edit</th>
               <th>Action</th>
               <th>Delete</th>
             </tr>
@@ -118,13 +118,13 @@ const TaskList = () => {
       </div>
 
       {showEditModal &&
-        <EditModal selectedTask={selectedTask} setShowEditModal={setShowEditModal} loadTaskData={loadTaskData}/>
+        <EditModal selectedTask={selectedTask} setShowEditModal={setShowEditModal} loadTaskData={loadTaskData} />
       }
       {showViewModal &&
-        <ViewModal selectedTask={selectedTask} setShowViewModal={setShowViewModal} loadTaskData={loadTaskData}/>
+        <ViewModal selectedTask={selectedTask} setShowViewModal={setShowViewModal} loadTaskData={loadTaskData} />
       }
       {showDeleteModal &&
-        <DeleteModal selectedTask={selectedTask} setShowDeleteModal={setShowDeleteModal} loadTaskData={loadTaskData}/>
+        <DeleteModal selectedTask={selectedTask} setShowDeleteModal={setShowDeleteModal} loadTaskData={loadTaskData} />
       }
     </div>
   )

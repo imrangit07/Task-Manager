@@ -3,10 +3,11 @@ import GetUserDetails from "./GetUserDetails";
 import axios from "axios";
 import BACKEND_URL from "../config/Config";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const CreateUser = () => {
   const token = useSelector((state) => state.auth.token);
-
+  const [load, setLoad] = useState(false)
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -24,10 +25,16 @@ const CreateUser = () => {
           "authorization": `Bearer ${token}`
         }
       });
-      alert(res.data.message)
-
+      setUserData({
+        name: "",
+        email: "",
+        designation: ""
+      })
+      toast.success(res.data.message)
+      setLoad(!load)
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
+
     }
   }
   return (
@@ -40,26 +47,30 @@ const CreateUser = () => {
           <form >
             <div className='form-group'>
               <label>Name</label>
-              <input type='text' placeholder='Enter User Name' name='name' onChange={handelInput} required />
+              <input type='text' placeholder='Enter User Name' value={userData.name} name='name' onChange={handelInput} required />
             </div>
             <div className='form-group'>
               <label>email</label>
-              <input type='email' placeholder='Enter Email' name='email' onChange={handelInput}
+              <input type='email' placeholder='Enter Email' value={userData.email} name='email' onChange={handelInput}
                 required />
             </div>
             <div className="form-group">
               <label>Designation</label>
-              <select name="designation" onChange={handelInput} required>
-                <option value="">Select designation</option>
+              <select name="designation" value={userData.designation} onChange={handelInput} required>
+                <option value="">Select Designation</option>
                 <option value="manager">Manager</option>
                 <option value="team-leader">Team Leader</option>
-                <option value="frontend-dev">Frontend Developer</option>
-                <option value="backend-dev">Backend Developer</option>
-                <option value="designer">Designer</option>
-                <option value="software-dev">Software Developer</option>
-                <option value="UI/UX desig.">UI/UX Designer</option>
-                <option value="Quality ana.">Quality Analyst</option>
-                <option value="DevOps Eng.">DevOps Engineer</option>
+                <option value="frontend-developer">Frontend Developer</option>
+                <option value="backend-developer">Backend Developer</option>
+                <option value="fullstack-developer">Full Stack Developer</option>
+                <option value="software-developer">Software Developer</option>
+                <option value="ui-ux-designer">UI/UX Designer</option>
+                <option value="graphic-designer">Graphic Designer</option>
+                <option value="quality-analyst">Quality Analyst</option>
+                <option value="devops-engineer">DevOps Engineer</option>
+                <option value="project-manager">Project Manager</option>
+                <option value="product-owner">Product Owner</option>
+                <option value="business-analyst">Business Analyst</option>
               </select>
             </div>
             <button type="submit" className="submit-btn" onClick={handelSubmit}>
@@ -69,8 +80,7 @@ const CreateUser = () => {
         </div>
       </div>
       <div className="right-container">
-        <GetUserDetails />
-
+        <GetUserDetails load={load} />
       </div>
     </div>
   )

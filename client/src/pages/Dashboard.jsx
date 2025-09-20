@@ -9,7 +9,7 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const location = useLocation()
     return (
-        <div className='dashboard-container scroll-bar'>
+        <div className=' scroll-bar'>
             <Header />
             <div className='dashboard-layout'>
                 <div className='dashboard-sidebar'>
@@ -34,13 +34,11 @@ const Dashboard = () => {
                    
               <button className='logout-button' onClick={()=>dispatch(logout())}>Logout</button>
       
-                </div>
-                <div className='dashboard-main'>
+                </div> 
                     <div className="dashboard-content">
 
                     <Outlet />
                     </div>
-                </div>
             </div>
         </div>
     )

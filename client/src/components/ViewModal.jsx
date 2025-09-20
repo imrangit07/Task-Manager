@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import BACKEND_URL from "../config/Config";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 const ViewModal = ({ selectedTask, setShowViewModal }) => {
   const token = useSelector((state) => state.auth.token);
   const [users, setUsers] = useState([]);
@@ -16,18 +16,15 @@ const ViewModal = ({ selectedTask, setShowViewModal }) => {
           "authorization": `Bearer ${token}`
         }
       });
-      console.log("log", res.data);
 
       setUsers(res.data)
     } catch (error) {
 
     }
   }
-  console.log(selectUser);
 
   const handelAssign = async (e) => {
     e.preventDefault()
-    console.log("handle", selectUser);
 
     try {
       const res = await axios.put(`${BACKEND_URL}tasks/assign?id=${selectedTask._id}`, { userId: selectUser }, {
@@ -35,15 +32,14 @@ const ViewModal = ({ selectedTask, setShowViewModal }) => {
           "authorization": `Bearer ${token}`
         }
       });
-      alert(res.data.message);
+      toast.success(res.data.message);
       setShowViewModal(false)
 
     } catch (error) {
-      console.log(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Somthing went Wrong. Please try again");
 
     }
   }
-  console.log(selectedTask);
 
 
   useEffect(() => {
@@ -56,7 +52,7 @@ const ViewModal = ({ selectedTask, setShowViewModal }) => {
         <div className="modal-header">
           <div>
             <h3 style={{ marginBottom: "4px" }}>Task Details:</h3>
-            <span style={{ color: "gray" }}>Assigned To: {selectedTask.assignedTo?.name || "User"}</span>
+            <span style={{ color: "gray" }}>Assigned To: {selectedTask.assignedTo?.name || "Unassigned"}</span>
           </div>
 
 
@@ -90,6 +86,8 @@ const ViewModal = ({ selectedTask, setShowViewModal }) => {
             </div>
           )}
         </div>
+        {
+          // users?.assignedTo?.role === 'admin' ?
         <div className="modal-footer" style={{ display: 'flex', justifyContent: "space-between" }}>
           <div style={{ display: "flex", gap: "20px", alignItems: "center", justifyContent: 'center' }}>
             <h3>Assign To : </h3>
@@ -111,6 +109,11 @@ const ViewModal = ({ selectedTask, setShowViewModal }) => {
             Assign
           </button>
         </div>
+        // :
+        // <div style={{padding:"10px 0"}}>
+        //   <hr />
+        // </div>
+        }
       </div>
     </div>
   )
